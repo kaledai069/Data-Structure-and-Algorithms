@@ -1,5 +1,8 @@
 #include <iostream>
 #include <string>
+#include <math.h>
+#include <map>
+#include <vector>
 #define SIZE 100
 
 template <typename T>
@@ -48,11 +51,51 @@ class Stack
 		}
 };
 
+std::string infix_to_prefix_parsher(std::string);
+
 int main()
 {
+	std::string temp = "a-b+(m^n)*(o+p)-q/r^s*t+z";
+	std::map<char, std::string> exp_map_data =
+	{
+		{'a', static_cast<std::string>("3")},
+		{'b', static_cast<std::string>("2")},
+		{'m', static_cast<std::string>("3")},
+		{'n', static_cast<std::string>("2")},
+		{'o', static_cast<std::string>("5")},
+		{'p', static_cast<std::string>("7")},
+		{'q', static_cast<std::string>("64")},
+		{'r', static_cast<std::string>("3")},
+		{'s', static_cast<std::string>("4")},
+		{'t', static_cast<std::string>("9")},
+		{'z', static_cast<std::string>("10")}
+	};
+	std::vector<std::string> expression;
+	std::cout << infix_to_prefix_parsher(temp);
+	for(char item : infix_to_prefix_parsher(temp))
+	{
+		if(exp_map_data.find(item) != exp_map_data.end()) // if the key value can be found in the above map
+		{
+			expression.push_back(exp_map_data[item]);
+		}
+		else
+		{
+			std::string temp(1, item);
+			expression.push_back(temp);
+		}
+		
+	}
+	for(std::string item : expression)
+	{
+		std::cout << item << "\t";
+	}
+	std::cout << std::endl;
+	return 0;
+}
+
+std::string infix_to_prefix_parsher(std::string exp)
+{
 	Stack<char> infix_stack;
-	std::string exp = "k+l-m*n+(o^p)*w/u/v*t+q";
-	//std::string exp = "a-b+(m^n)*(o+p)-q/r^s*t+z";
 	std::string final_result;
 	for(int i = 0; i < exp.length(); i++)
 	{
@@ -144,6 +187,18 @@ int main()
 		final_result += infix_stack.peek();
 		infix_stack.pop();
 	}
-	std::cout << final_result << std::endl;
-	return 0;
+	return final_result;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
