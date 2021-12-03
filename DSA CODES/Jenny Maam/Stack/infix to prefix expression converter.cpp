@@ -84,11 +84,7 @@ int main()
 {
 	std::string temp_exp = "a-b+(m^n)*(o+p)-q/r^s*t+z";
 	std::vector<std::string> expression = prefix_to_map_parsher(reverse_string(temp_exp));
-	std::cout << infix_to_prefix_parsher(reverse_string(temp_exp)) << std::endl;
-	for(std::string item : expression)
-	{
-		std::cout << item << std::endl;
-	}
+	std::cout << "Evaluation: " << prefix_evaluator(expression) << std::endl;
 	return 0;
 }
 
@@ -197,7 +193,7 @@ std::string reverse_string(std::string temp_string)
 std::string prefix_evaluator(std::vector<std::string> expression)
 {
 	Stack<std::string> convo_stack;
-	for(int i = expression.size()-1; i >= 0; i--)
+	for(int i = expression.size()-1; i > 0; i--)
 	{
 		if(int(expression[i][0]) >= 48 and int(expression[i][0]) <= 57)
 		{
@@ -217,8 +213,7 @@ std::string prefix_evaluator(std::vector<std::string> expression)
 			convo_stack.push(std::to_string(converter(temp1, temp2, expression[i][0])));
 		}
 	}
-	std::cout << convo_stack.peek() << std::endl;
-	return convo_stack.top_n_pop();
+	return convo_stack.peek();
 }
 
 
@@ -259,7 +254,10 @@ int converter(int a, int b, char op)
 		case '*':
 			return a * b;
 			break;
+		default:
+			break;
 	}
+	return 0;
 }
 
 int exp_evaluator(std::string str)
@@ -278,17 +276,3 @@ int exp_evaluator(std::string str)
 		return temp_result;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
