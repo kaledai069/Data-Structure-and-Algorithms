@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iostream>
 #include <string>
 #include <math.h>
 #include <map>
@@ -57,32 +58,37 @@ class Stack
 		}
 };
 
-	std::map<char, std::string> exp_map_data =
-	{
-		{'a', static_cast<std::string>("3")},
-		{'b', static_cast<std::string>("2")},
-		{'m', static_cast<std::string>("3")},
-		{'n', static_cast<std::string>("2")},
-		{'o', static_cast<std::string>("5")},
-		{'p', static_cast<std::string>("7")},
-		{'q', static_cast<std::string>("64")},
-		{'r', static_cast<std::string>("2")},
-		{'s', static_cast<std::string>("3")},
-		{'t', static_cast<std::string>("9")},
-		{'z', static_cast<std::string>("10")}
-	};
+std::map<char, std::string> exp_map_data =
+{
+	{'a', static_cast<std::string>("3")},
+	{'b', static_cast<std::string>("2")},
+	{'m', static_cast<std::string>("3")},
+	{'n', static_cast<std::string>("2")},
+	{'o', static_cast<std::string>("5")},
+	{'p', static_cast<std::string>("7")},
+	{'q', static_cast<std::string>("64")},
+	{'r', static_cast<std::string>("2")},
+	{'s', static_cast<std::string>("3")},
+	{'t', static_cast<std::string>("9")},
+	{'z', static_cast<std::string>("10")}
+};
 
+std::string reverse_string(std::string);
 std::string infix_to_prefix_parsher(std::string);
 int converter(int, int, char);
 int exp_evaluator(std::string);
-std::string prefix_evaluator(std::vector<std::string>);
 std::vector<std::string> prefix_to_map_parsher(std::string);
+std::string prefix_evaluator(std::vector<std::string> );
 
 int main()
 {
-	std::string temp = "a-b+(m^n)*(o+p)-q/r^s*t+z";
-	std::vector<std::string> expression = prefix_to_map_parsher(temp);
-	std::cout << "EVALUATION: " << prefix_evaluator(expression) << std::endl;
+	std::string temp_exp = "a-b+(m^n)*(o+p)-q/r^s*t+z";
+	std::vector<std::string> expression = prefix_to_map_parsher(reverse_string(temp_exp));
+	std::cout << infix_to_prefix_parsher(reverse_string(temp_exp)) << std::endl;
+	for(std::string item : expression)
+	{
+		std::cout << item << std::endl;
+	}
 	return 0;
 }
 
@@ -111,13 +117,7 @@ std::string infix_to_prefix_parsher(std::string exp)
 							infix_stack.pop();
 							temp = infix_stack.peek();
 						}
-						if(temp == '-' or temp == '+')
-						{
-							final_result += temp;
-							infix_stack.pop();
-							infix_stack.push(exp[i]);
-						}
-						else if(temp == '(')
+						if(temp == '-' or temp == '+' or temp == ')')
 						{
 							infix_stack.push(exp[i]);
 						}
@@ -139,16 +139,10 @@ std::string infix_to_prefix_parsher(std::string exp)
 							infix_stack.pop();
 							temp = infix_stack.peek();
 						}
-						if(temp == '*' or temp == '/' or temp == '(')
+						if(temp == '*' or temp == '/' or temp == ')' or temp == '+' or temp == '-')
 						{
-							final_result += temp;
-							infix_stack.pop();
 							infix_stack.push(exp[i]);
 						}	
-						else if(temp == '(' or temp == '+' or temp == '-')
-						{
-							infix_stack.push(exp[i]);
-						}
 						else if(temp == '^')
 						{
 							while(temp == '^')
@@ -164,11 +158,11 @@ std::string infix_to_prefix_parsher(std::string exp)
 						infix_stack.push(exp[i]);
 					}
 					break;
-				case '(':
-					infix_stack.push('(');
-					break;
 				case ')':
-					while(infix_stack.peek() != '(')
+					infix_stack.push(')');
+					break;
+				case '(':
+					while(infix_stack.peek() != ')')
 					{
 						final_result.push_back(infix_stack.peek());
 						infix_stack.pop();	
@@ -176,44 +170,57 @@ std::string infix_to_prefix_parsher(std::string exp)
 					infix_stack.pop();
 					break;
 				case '^':
-					infix_stack.push('^');
-					break;
-			}
+					infix_stack.push(exp[i]);
+					break;	
 		}
 	}
+}
 	while(!infix_stack.empty())
 	{
 		final_result += infix_stack.peek();
 		infix_stack.pop();
 	}
-	return final_result;
+	return reverse_string(final_result);
+}
+
+
+std::string reverse_string(std::string temp_string)
+{
+	std::string temp_result;
+	for(int i = temp_string.length(); i >= 0; i--)
+	{
+		temp_result.push_back(temp_string[i]);	
+	}
+	return temp_result;
 }
 
 std::string prefix_evaluator(std::vector<std::string> expression)
 {
 	Stack<std::string> convo_stack;
-	for(std::string temp : expression)
+	for(int i = expression.size()-1; i >= 0; i--)
 	{
-		if(int(temp[0]) >= 48 and int(temp[0]) <= 57)
+		if(int(expression[i][0]) >= 48 and int(expression[i][0]) <= 57)
 		{
-			convo_stack.push(temp);
+			convo_stack.push(expression[i]);
 		}
-		else if(temp.length() > 1)
+		else if(expression[i].length() > 1)
 		{
-			if(int(temp[0]) >= 48 and int(temp[0]) <= 57)
+			if(int(expression[i][0]) >= 48 and int(expression[i][0]) <= 57)
 			{
-				convo_stack.push(temp);
+				convo_stack.push(expression[i]);
 			}
 		}
 		else // for the operator part
 		{
-			int temp2 = exp_evaluator(convo_stack.top_n_pop());
 			int temp1 = exp_evaluator(convo_stack.top_n_pop());
-			convo_stack.push(std::to_string(converter(temp1, temp2, temp[0])));
+			int temp2 = exp_evaluator(convo_stack.top_n_pop());
+			convo_stack.push(std::to_string(converter(temp1, temp2, expression[i][0])));
 		}
 	}
+	std::cout << convo_stack.peek() << std::endl;
 	return convo_stack.top_n_pop();
 }
+
 
 std::vector<std::string> prefix_to_map_parsher(std::string temp)
 {
@@ -271,3 +278,17 @@ int exp_evaluator(std::string str)
 		return temp_result;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

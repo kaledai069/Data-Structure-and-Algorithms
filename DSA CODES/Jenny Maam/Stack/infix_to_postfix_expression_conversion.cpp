@@ -68,7 +68,8 @@ int main()
 				case '-':
 					if(!infix_stack.empty())
 					{
-						char temp = infix_stack.peek();
+						char temp;
+						temp = infix_stack.peek();
 						while(temp == '*' or temp == '/' or temp == '^')
 						{
 							final_result += temp;
