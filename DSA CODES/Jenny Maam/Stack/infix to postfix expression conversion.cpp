@@ -51,8 +51,8 @@ class Stack
 int main()
 {
 	Stack<char> infix_stack;
-	std::string exp = "k+l-m*n+(o^p)*w/u/v*t+q";
-	//std::string exp = "a-b+(m^n)*(o+p)-q/r^s*t+z";
+//	std::string exp = "k+l-m*n+(o^p)*w/u/v*t+q";
+	std::string exp = "a-b+(m^n)*(o+p)-q/r^s*t+z";
 	std::string final_result;
 	for(int i = 0; i < exp.length(); i++)
 	{
@@ -97,6 +97,12 @@ int main()
 					if(!infix_stack.empty())
 					{
 						char temp = infix_stack.peek();
+						while(temp == '^')
+						{
+							final_result += temp;
+							infix_stack.pop();
+							temp = infix_stack.peek();
+						}
 						if(temp == '*' or temp == '/' or temp == '(')
 						{
 							final_result += temp;

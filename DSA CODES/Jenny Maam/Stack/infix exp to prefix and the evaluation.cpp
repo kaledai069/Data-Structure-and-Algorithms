@@ -49,13 +49,14 @@ class Stack
 		{
 			return top == -1 ? true : false;
 		}
+		T top_n_pop()
+		{
+			T temp = this->peek();
+			this->pop();
+			return temp;
+		}
 };
 
-std::string infix_to_prefix_parsher(std::string);
-
-int main()
-{
-	std::string temp = "a-b+(m^n)*(o+p)-q/r^s*t+z";
 	std::map<char, std::string> exp_map_data =
 	{
 		{'a', static_cast<std::string>("3")},
@@ -65,31 +66,23 @@ int main()
 		{'o', static_cast<std::string>("5")},
 		{'p', static_cast<std::string>("7")},
 		{'q', static_cast<std::string>("64")},
-		{'r', static_cast<std::string>("3")},
-		{'s', static_cast<std::string>("4")},
+		{'r', static_cast<std::string>("2")},
+		{'s', static_cast<std::string>("3")},
 		{'t', static_cast<std::string>("9")},
 		{'z', static_cast<std::string>("10")}
 	};
-	std::vector<std::string> expression;
-	std::cout << infix_to_prefix_parsher(temp);
-	for(char item : infix_to_prefix_parsher(temp))
-	{
-		if(exp_map_data.find(item) != exp_map_data.end()) // if the key value can be found in the above map
-		{
-			expression.push_back(exp_map_data[item]);
-		}
-		else
-		{
-			std::string temp(1, item);
-			expression.push_back(temp);
-		}
-		
-	}
-	for(std::string item : expression)
-	{
-		std::cout << item << "\t";
-	}
-	std::cout << std::endl;
+
+std::string infix_to_prefix_parsher(std::string);
+int converter(int, int, char);
+int exp_evaluator(std::string);
+std::string prefix_evaluator(std::vector<std::string>);
+std::vector<std::string> prefix_to_map_parsher(std::string);
+
+int main()
+{
+	std::string temp = "a-b+(m^n)*(o+p)-q/r^s*t+z";
+	std::vector<std::string> expression = prefix_to_map_parsher(temp);
+	std::cout << "EVALUATION: " << prefix_evaluator(expression) << std::endl;
 	return 0;
 }
 
@@ -140,6 +133,12 @@ std::string infix_to_prefix_parsher(std::string exp)
 					if(!infix_stack.empty())
 					{
 						char temp = infix_stack.peek();
+						while(temp == '^')
+						{
+							final_result += temp;
+							infix_stack.pop();
+							temp = infix_stack.peek();
+						}
 						if(temp == '*' or temp == '/' or temp == '(')
 						{
 							final_result += temp;
@@ -190,15 +189,85 @@ std::string infix_to_prefix_parsher(std::string exp)
 	return final_result;
 }
 
+std::string prefix_evaluator(std::vector<std::string> expression)
+{
+	Stack<std::string> convo_stack;
+	for(std::string temp : expression)
+	{
+		if(int(temp[0]) >= 48 and int(temp[0]) <= 57)
+		{
+			convo_stack.push(temp);
+		}
+		else if(temp.length() > 1)
+		{
+			if(int(temp[0]) >= 48 and int(temp[0]) <= 57)
+			{
+				convo_stack.push(temp);
+			}
+		}
+		else // for the operator part
+		{
+			int temp2 = exp_evaluator(convo_stack.top_n_pop());
+			int temp1 = exp_evaluator(convo_stack.top_n_pop());
+			convo_stack.push(std::to_string(converter(temp1, temp2, temp[0])));
+		}
+	}
+	return convo_stack.top_n_pop();
+}
 
+std::vector<std::string> prefix_to_map_parsher(std::string temp)
+{
+	std::vector<std::string> expression;
+	for(char item : infix_to_prefix_parsher(temp))
+	{
+		if(exp_map_data.find(item) != exp_map_data.end()) // if the key value can be found in the above map
+		{
+			expression.push_back(exp_map_data[item]);
+		}
+		else
+		{
+			std::string temp(1, item);
+			expression.push_back(temp);
+		}
+	}
+	return expression;
+}
 
+int converter(int a, int b, char op)
+{
+	switch(op)
+	{
+		case '+':
+			return a + b;
+			break;
+		case '-':
+			return a - b;
+			break;
+		case '/':
+			return a / b;
+			break;
+		case '^':
+			return pow(a, b);
+			break;
+		case '*':
+			return a * b;
+			break;
+	}
+}
 
-
-
-
-
-
-
-
-
-
+int exp_evaluator(std::string str)
+{
+	if(str.length() == 1)
+	{
+		return int(str[0]) - 48;
+	}
+	else
+	{
+		int temp_result = 0;
+		for(int i = 0; i < str.length(); i++)
+		{
+			temp_result += (int(str[i]) - 48) * pow(10, str.length()-1-i);
+		}
+		return temp_result;
+	}
+}
