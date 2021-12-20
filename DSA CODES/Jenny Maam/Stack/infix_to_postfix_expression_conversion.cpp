@@ -52,7 +52,8 @@ int main()
 {
 	Stack<char> infix_stack;
 //	std::string exp = "k+l-m*n+(o^p)*w/u/v*t+q";
-	std::string exp = "a-b+(m^n)*(o+p)-q/r^s*t+z";
+//	std::string exp = "a-b+(m^n)*(o+p)-q/r^s*t+z";
+	std::string exp = "a+b-(c*d/e+f)-g*h";
 	std::string final_result;
 	for(int i = 0; i < exp.length(); i++)
 	{
@@ -104,7 +105,7 @@ int main()
 							infix_stack.pop();
 							temp = infix_stack.peek();
 						}
-						if(temp == '*' or temp == '/' or temp == '(')
+						if(temp == '*' or temp == '/')
 						{
 							final_result += temp;
 							infix_stack.pop();
@@ -114,15 +115,15 @@ int main()
 						{
 							infix_stack.push(exp[i]);
 						}
-						else if(temp == '^')
-						{
-							while(temp == '^')
-							{
-								final_result += temp;
-								infix_stack.pop();
-								temp = infix_stack.peek();
-							}
-						}
+//						else if(temp == '^')
+//						{
+//							while(temp == '^')
+//							{
+//								final_result += temp;
+//								infix_stack.pop();
+//								temp = infix_stack.peek();
+//							}
+//						}
 					}
 					else
 					{

@@ -59,17 +59,17 @@ class Stack
 
 std::map<char, std::string> exp_map_data =
 {
-	{'a', static_cast<std::string>("3")},
-	{'b', static_cast<std::string>("2")},
-	{'m', static_cast<std::string>("3")},
-	{'n', static_cast<std::string>("2")},
-	{'o', static_cast<std::string>("5")},
-	{'p', static_cast<std::string>("7")},
-	{'q', static_cast<std::string>("64")},
-	{'r', static_cast<std::string>("2")},
-	{'s', static_cast<std::string>("3")},
-	{'t', static_cast<std::string>("9")},
-	{'z', static_cast<std::string>("10")}
+	{'a', static_cast<std::string>("10")},
+	{'b', static_cast<std::string>("5")},
+	{'c', static_cast<std::string>("4")},
+	{'d', static_cast<std::string>("6")},
+	{'e', static_cast<std::string>("3")},
+	{'f', static_cast<std::string>("8")},
+	{'g', static_cast<std::string>("2")},
+	{'h', static_cast<std::string>("1")}
+//	{'s', static_cast<std::string>("3")},
+//	{'t', static_cast<std::string>("9")},
+//	{'z', static_cast<std::string>("10")}
 };
 
 std::string infix_to_postfix_parsher(std::string);
@@ -80,7 +80,7 @@ std::vector<std::string> postfix_to_map_parsher(std::string);
 
 int main()
 {
-	std::string temp = "a-b+(m^n)*(o+p)-q/r^s*t+z";
+	std::string temp = "a+b-(c*d/e+f)-g*h";
 	std::vector<std::string> expression = postfix_to_map_parsher(temp);
 	std::cout << "EVALUATION: " << postfix_evaluator(expression) << std::endl;
 	return 0;
@@ -139,7 +139,7 @@ std::string infix_to_postfix_parsher(std::string exp)
 							infix_stack.pop();
 							temp = infix_stack.peek();
 						}
-						if(temp == '*' or temp == '/' or temp == '(')
+						if(temp == '*' or temp == '/')
 						{
 							final_result += temp;
 							infix_stack.pop();
