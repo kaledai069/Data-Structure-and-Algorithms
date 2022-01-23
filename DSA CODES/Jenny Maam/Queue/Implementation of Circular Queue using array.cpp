@@ -1,5 +1,5 @@
 #include <iostream>
-#define SIZE 10
+#define SIZE 5
 
 template <class T>
 class C_Queue
@@ -7,6 +7,7 @@ class C_Queue
 	public:
 		T *array;
 		int front, rear;
+		bool first_time = true;
 		C_Queue<T>()
 		{
 			array = new T[SIZE];
@@ -29,8 +30,17 @@ class C_Queue
 				std::cout << "Enter the item to be enqueued: ";
 				T value;
 				std::cin >> value;
-				array[rear] = value;
+				if(first_time)
+				{
+					array[rear]=value;
+					first_time = false;
+				}
+				else
+				{
 				rear = (rear + 1) % SIZE;
+				array[rear] = value;
+					
+				}
 			}
 		}
 		
@@ -56,8 +66,10 @@ class C_Queue
 		{
 			if(!this->isEmpty())
 			{
-				for(int i = this->front; i != this->rear; i = (i + 1) % SIZE)
+				int i;
+				for(i = this->front; i != this->rear; i = (i + 1) % SIZE)
 					std::cout << array[i] << '\t';
+				std::cout << array[i] << '\t';
 				std::cout << std::endl;	
 			}
 			else
