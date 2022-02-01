@@ -46,7 +46,7 @@ class BST
 			if(root == NULL)
 				return;
 			inorder_traversal(root->left);
-			std::cout << root->data << std::endl;
+			std::cout << '\t' << root->data << "   ";
 			inorder_traversal(root->right);
 		}
 		
@@ -54,7 +54,7 @@ class BST
 		{
 			if(root == NULL)
 				return;
-			std::cout << root->data << std::endl;
+			std::cout << '\t' << root->data << "   ";
 			preorder_traversal(root->left);
 			preorder_traversal(root->right);
 		}	
@@ -65,7 +65,7 @@ class BST
 				return;
 			postorder_traversal(root->left);
 			postorder_traversal(root->right);
-			std::cout << root->data << std::endl;
+			std::cout << '\t' << root->data << "   ";
 		}
 		
 		bool check_empty_tree()
