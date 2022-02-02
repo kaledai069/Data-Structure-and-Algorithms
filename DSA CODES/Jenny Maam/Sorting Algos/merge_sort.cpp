@@ -61,10 +61,10 @@ void merge_sort(int arr[], int lb, int ub)
 
 int main()
 {
-	int arr[9] = {15, 5, 24, 8, 1, 3, 16, 10, 20};
-	merge_sort(arr, 0, 8);
+	int arr[] = {200, 299, 737, 172, 383, 219, 973, 233, 712, 396, 660, 960, 658, 397, 352, 642, 592, 915, 74, 111};
+	merge_sort(arr, 0, 19);
 	
-	for(int i = 0; i < 8; i++)
+	for(int i = 0; i < 20; i++)
 	{
 		std::cout << arr[i] << "\t";
 	}

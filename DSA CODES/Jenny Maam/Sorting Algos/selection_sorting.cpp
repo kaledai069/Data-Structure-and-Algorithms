@@ -29,6 +29,6 @@ void selection_sort(int arr[], int size)
 
 int main()
 {
-	int int_arr[] = {7, 4, 10, 8, 3, 1};
-	selection_sort(int_arr, 6);
+	int int_arr[] = {200, 299, 737, 172, 383, 219, 973, 233, 712, 396, 660, 960, 658, 397, 352, 642, 592, 915, 74, 111};
+	selection_sort(int_arr, 20);
 }
