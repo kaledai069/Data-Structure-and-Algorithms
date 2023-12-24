@@ -137,7 +137,6 @@ class BST
 				{
 					delete rootD;
 					rootD = NULL;
-					
 				}
 				// case 2: One child
 				else if(rootD->left == NULL)
