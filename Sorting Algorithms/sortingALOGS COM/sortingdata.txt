@@ -1,0 +1,12 @@
+SORTING AN INTEGER ARRAY WITH 150000 ELEMENTS USING DIFFERENT SORTING ALGORITHM
+
+Time taken for BUBBLE SORT : 59.521000 sec
+Time taken for SELECTION SORT : 23.826000 sec
+Time taken for INSERTION SORT : 13.188000 sec
+Time taken for MERGE SORT : 6.28700 sec
+Time taken for SHELL SORT : 0.048000 sec
+Time taken for HEAP SORT : 0.03400 sec
+Time taken for QUICK SORT : 0.01800 sec
+Time taken for RADIX/BUCKET SORT : 0.013000 sec
+Time taken for TIMSORT : 0.004000 sec 
+Time taken for COUNTING SORT : 0.00300 sec
